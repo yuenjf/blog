@@ -1,6 +1,6 @@
-## blog 后台管理页面
+# blog 前端 后台管理页面
 
-####一、使用模块
+## 一、使用模块
 
 - react-router-dom 路由
 
@@ -12,7 +12,7 @@
 
 - markdown 导航：[markdown-navbar](https://github.com/parksben/markdown-navbar)
 
-####二、遇到的问题
+## 二、遇到的问题
 
 - Warning: Received `true` for a non-boolean attribute `jsx`.
   - 原因：原因是 create-react-app 的 webpack 配置中的 babelrc 默认是 false。使得 babel 没有生效，无法转译 styled—jsx。
