@@ -4,7 +4,7 @@ import {
     GithubOutlined,
     createFromIconfontCN
 } from '@ant-design/icons';
-import '../styles/components/author.styl'
+import '../../styles/components/author.styl'
 
 const IconFont = createFromIconfontCN({
     scriptUrl: '//at.alicdn.com/t/font_1817705_qekkrrdx6.js'

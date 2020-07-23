@@ -1,4 +1,4 @@
-import '../styles/components/footer.styl'
+import '../../styles/components/footer.styl'
 
 const Footer = () => (
     <div className="footer">

@@ -1,9 +1,9 @@
 import React, {useContext} from 'react'
-import {MdContext} from '../pages/detail'
+import {MdContext} from '../../pages/detail'
 import {Affix} from 'antd'
 import MarkdownNavbar from 'markdown-navbar'
 import 'markdown-navbar/dist/navbar.css'
-import '../styles/components/marknav.styl'
+import '../../styles/components/marknav.styl'
 
 const MdNav = () => {
     const markdown = useContext(MdContext)

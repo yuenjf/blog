@@ -10,10 +10,10 @@ import {
     FolderOutlined,
     FireOutlined
 } from '@ant-design/icons'
-import Header from '../components/Header'
-import Author from '../components/Author'
-import Advert from '../components/Advert'
-import Footer from '../components/Footer'
+import Header from '../components/common/Header'
+import Author from '../components/common/Author'
+import Advert from '../components/common/Advert'
+import Footer from '../components/common/Footer'
 
 const BlogList = (props) => {
     const [list, setList] = useState(props.data)
