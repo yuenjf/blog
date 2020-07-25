@@ -1,79 +1,79 @@
-import React, {useState} from 'react'
-import {Route} from 'react-router-dom'
-import {Layout, Menu, Breadcrumb} from 'antd'
+import React, { useState } from 'react';
+import { Route } from 'react-router-dom';
+import { Layout, Menu, Breadcrumb } from 'antd';
 import {
-    DesktopOutlined,
-    PieChartOutlined,
-    FileOutlined,
-    TeamOutlined,
-    UserOutlined,
-} from '@ant-design/icons'
-import AddArticle from "../components/index/AddArticle"
+  DesktopOutlined,
+  PieChartOutlined,
+  FileOutlined,
+  TeamOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
+import AddArticle from '../components/index/AddArticle';
 
-const {Header, Content, Footer, Sider} = Layout
-const {SubMenu} = Menu
+const { Header, Content, Footer, Sider } = Layout;
+const { SubMenu } = Menu;
 
 const Index = () => {
-    const [collapsed, setCollapsed] = useState(false)
+  const [collapsed, setCollapsed] = useState(false);
 
-    const onCollapse = (collapsed) => {
-        setCollapsed(collapsed)
-    }
+  const onCollapse = (collapsed) => {
+    setCollapsed(collapsed);
+  };
 
-    return (
-        <>
-            <Layout style={{minHeight: '100vh'}}>
-                <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
-                    <div className="logo"/>
-                    <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
-                        <Menu.Item key="1" icon={<PieChartOutlined/>}>
-                            工作台
-                        </Menu.Item>
-                        <Menu.Item key="2" icon={<DesktopOutlined/>}>
-                            添加文章
-                        </Menu.Item>
-                        <SubMenu key="sub1" icon={<UserOutlined/>} title="User">
-                            <Menu.Item key="3">Tom</Menu.Item>
-                            <Menu.Item key="4">Bill</Menu.Item>
-                            <Menu.Item key="5">Alex</Menu.Item>
-                        </SubMenu>
-                        <SubMenu key="sub2" icon={<TeamOutlined/>} title="Team">
-                            <Menu.Item key="6">Team 1</Menu.Item>
-                            <Menu.Item key="8">Team 2</Menu.Item>
-                        </SubMenu>
-                        <Menu.Item key="9" icon={<FileOutlined/>}/>
-                    </Menu>
-                </Sider>
-                <Layout className="site-layout">
-                    <Content style={{margin: '0 16px'}}>
-                        <Breadcrumb style={{margin: '16px 0'}}>
-                            <Breadcrumb.Item>博客管理系统</Breadcrumb.Item>
-                            <Breadcrumb.Item>工作台</Breadcrumb.Item>
-                        </Breadcrumb>
-                        <div
-                            className="site-layout-background"
-                            style={{padding: 10, minHeight: 360, background: '#fff'}}
-                        >
-                            <div>
-                                <Route path="/index/" exact component={AddArticle}/>
-                            </div>
-                        </div>
-                    </Content>
-                    {/*<Footer style={{textAlign: 'center'}}>*/}
-                    {/*    Ant Design ©2018 Created by Ant UED*/}
-                    {/*</Footer>*/}
-                </Layout>
-            </Layout>
+  return (
+    <>
+      <Layout style={{ minHeight: '100vh' }}>
+        <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
+          <div className="logo"/>
+          <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
+            <Menu.Item key="1" icon={<PieChartOutlined/>}>
+              工作台
+            </Menu.Item>
+            <Menu.Item key="2" icon={<DesktopOutlined/>}>
+              添加文章
+            </Menu.Item>
+            <SubMenu key="sub1" icon={<UserOutlined/>} title="User">
+              <Menu.Item key="3">Tom</Menu.Item>
+              <Menu.Item key="4">Bill</Menu.Item>
+              <Menu.Item key="5">Alex</Menu.Item>
+            </SubMenu>
+            <SubMenu key="sub2" icon={<TeamOutlined/>} title="Team">
+              <Menu.Item key="6">Team 1</Menu.Item>
+              <Menu.Item key="8">Team 2</Menu.Item>
+            </SubMenu>
+            <Menu.Item key="9" icon={<FileOutlined/>}/>
+          </Menu>
+        </Sider>
+        <Layout className="site-layout">
+          <Content style={{ margin: '0 16px' }}>
+            <Breadcrumb style={{ margin: '16px 0' }}>
+              <Breadcrumb.Item>博客管理系统</Breadcrumb.Item>
+              <Breadcrumb.Item>工作台</Breadcrumb.Item>
+            </Breadcrumb>
+            <div
+              className="site-layout-background"
+              style={{ padding: 10, minHeight: 360, background: '#fff' }}
+            >
+              <div>
+                <Route path="/index/" exact component={AddArticle}/>
+              </div>
+            </div>
+          </Content>
+          {/*<Footer style={{textAlign: 'center'}}>*/}
+          {/*    Ant Design ©2018 Created by Ant UED*/}
+          {/*</Footer>*/}
+        </Layout>
+      </Layout>
 
-            <style jsx>{`
+      <style jsx>{`
                 .logo {
                   height: 32px;
                   background: rgba(255, 255, 255, 0.2);
                   margin: 16px;
                 }
             `}</style>
-        </>
-    )
-}
+    </>
+  );
+};
 
-export default Index
+export default Index;

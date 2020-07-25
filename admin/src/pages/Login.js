@@ -1,61 +1,68 @@
-import React, {useState} from 'react'
-import {Spin, Card, Input, Button} from 'antd'
-import {UserOutlined, KeyOutlined} from '@ant-design/icons'
-import 'antd/dist/antd.css'
+import React, { useState } from 'react';
+import axios from 'axios';
+import servicePath from '../conig/apiUrl';
+import { Spin, Card, Input, Button, message } from 'antd';
+import { UserOutlined, KeyOutlined } from '@ant-design/icons';
+import 'antd/dist/antd.css';
 
 const Login = () => {
-    const [userName, setUserName] = useState() // eslint-disable-line no-unused-vars
-    const [password, setPassword] = useState() // eslint-disable-line no-unused-vars
-    const [isLoading, setIsLoading] = useState(false)
+  const [userName, setUserName] = useState(); // eslint-disable-line no-unused-vars
+  const [password, setPassword] = useState(); // eslint-disable-line no-unused-vars
+  const [isLoading, setIsLoading] = useState(false);
 
-    const handleCheckLogin = () => {
-        setIsLoading(true)
+  const handleCheckLogin = () => {
+    setIsLoading(true);
+    if (!userName || !password) {
+      message.error('用户名或密码不能为空');
+      return
     }
-    return (
-        <>
-            <div className="login">
-                <Spin spinning={isLoading}>
-                    <Card
-                        title="Yuen Blog System"
-                        bordered={true}
-                        style={{width: 400}}
-                    >
-                        <Input
-                            id="userName"
-                            size="large"
-                            placeholder="Enter your userName"
-                            prefix={<UserOutlined/>}
-                            onChange={(e) => {
-                                setUserName(e.target.value)
-                            }}
-                        />
-                        <br/>
-                        <br/>
-                        <Input.Password
-                            id="password"
-                            size="large"
-                            placeholder="Enter your password"
-                            prefix={<KeyOutlined/>}
-                            onChange={(e) => {
-                                setPassword(e.target.value)
-                            }}
-                        />
-                        <br/>
-                        <br/>
-                        <Button
-                            type="primary"
-                            size="large"
-                            block
-                            onClick={handleCheckLogin}
-                        >
-                            {' '}
-                            Login in{' '}
-                        </Button>
-                    </Card>
-                </Spin>
-            </div>
 
-            <style jsx>{`
+  };
+  return (
+    <>
+      <div className="login">
+        <Spin spinning={isLoading}>
+          <Card
+            title="Yuen Blog System"
+            bordered={true}
+            style={{ width: 400 }}
+          >
+            <Input
+              id="userName"
+              size="large"
+              placeholder="Enter your userName"
+              prefix={<UserOutlined/>}
+              onChange={(e) => {
+                setUserName(e.target.value);
+              }}
+            />
+            <br/>
+            <br/>
+            <Input.Password
+              id="password"
+              size="large"
+              placeholder="Enter your password"
+              prefix={<KeyOutlined/>}
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
+            />
+            <br/>
+            <br/>
+            <Button
+              type="primary"
+              size="large"
+              block
+              onClick={handleCheckLogin}
+            >
+              {' '}
+              Login in{' '}
+            </Button>
+          </Card>
+        </Spin>
+      </div>
+
+      <style jsx>{`
         body {
           background-color: #f0f0f0;
         }
@@ -70,8 +77,8 @@ const Login = () => {
           left: 0;
         }
       `}</style>
-        </>
-    )
-}
+    </>
+  );
+};
 
-export default Login
+export default Login;
