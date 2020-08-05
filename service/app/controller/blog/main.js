@@ -2,10 +2,10 @@
 
 const Controller = require('egg').Controller;
 
-class HomeController extends Controller {
+class MainController extends Controller {
   async index() {
     const { ctx } = this;
-    ctx.body = 'api hi';
+    ctx.body = '博客前台页面';
   }
 
   //  获取文章列表
@@ -14,8 +14,8 @@ class HomeController extends Controller {
     const sql = `
             SELECT article.id as id ,
             article.title as title ,
-            FROM_UNIXTIME(article.addTime,'%Y-%m-%d') as addTime ,
-            article.introduce as introduce ,
+            FROM_UNIXTIME(article.releaseDate,'%Y-%m-%d') as releaseDate ,
+            article.introduction as introduction ,
             article.viewCount as viewCount ,
             type.typeName as typeName 
             FROM article LEFT JOIN type ON article.typeId = type.id
@@ -31,10 +31,10 @@ class HomeController extends Controller {
     const sql = `
             SELECT article.id as ArticleId ,
             article.title as title ,
-            FROM_UNIXTIME(article.addTime,'%Y-%m-%d %H:%i:%s') as addTime ,
-            article.introduce as introduce ,
-            article.content as content ,
+            FROM_UNIXTIME(article.releaseDate,'%Y-%m-%d %H:%i:%s') as releaseDate ,
             article.viewCount as viewCount ,
+            article.introduction as introduction ,
+            article.content as content ,
             type.id as typeId ,
             type.typeName as typeName 
             FROM article LEFT JOIN type ON article.typeId = type.id 
@@ -58,8 +58,8 @@ class HomeController extends Controller {
     const sql = `
             SELECT article.id as id ,
             article.title as title ,
-            FROM_UNIXTIME(article.addTime,'%Y-%m-%d') as addTime ,
-            article.introduce as introduce ,
+            FROM_UNIXTIME(article.releaseDate,'%Y-%m-%d') as releaseDate ,
+            article.introduction as introduction ,
             article.viewCount as viewCount ,
             type.typeName as typeName 
             FROM article LEFT JOIN type ON article.typeId = type.id
@@ -70,4 +70,4 @@ class HomeController extends Controller {
   }
 }
 
-module.exports = HomeController;
+module.exports = MainController;

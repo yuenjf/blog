@@ -42,7 +42,7 @@ const Detail = (props) => {
                             React基础知识
                         </div>
                         <div className="list-icon center">
-                            <span><CalendarOutlined/>{props.addTime}</span>
+                            <span><CalendarOutlined/>{props.releaseDate}</span>
                             <span><FolderOutlined/>{props.typeName}</span>
                             <span><FireOutlined/>{props.viewCount}</span>
                         </div>

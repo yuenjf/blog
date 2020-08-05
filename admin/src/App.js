@@ -4,12 +4,12 @@ import Login from '../src/pages/Login'
 import Index from '../src/pages/Index'
 
 const App = () => {
-  return (
-    <Router>
-      <Route path="/login" exact component={Login} />
-      <Route path="/index" exact component={Index} />
-    </Router>
-  )
+    return (
+        <Router>
+            <Route path="/login" exact component={Login}/>
+            <Route path="/index" exact component={Index}/>
+        </Router>
+    )
 }
 
 export default App

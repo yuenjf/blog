@@ -38,12 +38,12 @@ const Home = (props) => {
                                     </Link>
                                 </div>
                                 <div className="list-icon">
-                                    <span><CalendarOutlined/>{item.addTime}</span>
+                                    <span><CalendarOutlined/>{item.releaseDate}</span>
                                     <span><FolderOutlined/>{item.typeName}</span>
                                     <span><FireOutlined/>{item.viewCount}</span>
                                 </div>
                                 <div className="list-introduce"
-                                     dangerouslySetInnerHTML={{__html: marked(item.introduce)}}/>
+                                     dangerouslySetInnerHTML={{__html: marked(item.introduction)}}/>
                             </List.Item>
                         )}
                     />

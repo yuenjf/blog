@@ -6,16 +6,16 @@ const { Option } = Select;
 const { TextArea } = Input;
 
 const AddArticle = () => {
-    const [id, setId] = useState(0); //  文章的id，如果是0说明是新增加，如果不是0，说明是修改
-    const [title, setTitle] = useState(''); //  文章标题
-    const [Mdcontent, setMdContent] = useState(''); //  markdown的编辑内容
-    const [content, setContent] = useState('文章预览'); //  markdown的预览内容
-    const [mdIntroduction, setMdIntroduction] = useState(); //  markdown的编辑简介
-    const [introduction, setIntroduction] = useState('简介预览'); //  markdown的预览简介
-    const [date, setDate] = useState(); //  发布日期
-    const [updateDate, setUpdateDate] = useState(); //  修改日期
-    const [typeInfo, setTypeInfo] = useState([]); //  所有的文章类别
-    const [selectedType, setSelectType] = useState(1); //  选择的文章类别
+    const [ id, setId ] = useState(0); //  文章的id，如果是0说明是新增加，如果不是0，说明是修改
+    const [ title, setTitle ] = useState(''); //  文章标题
+    const [ Mdcontent, setMdContent ] = useState(''); //  markdown的编辑内容
+    const [ content, setContent ] = useState('文章预览'); //  markdown的预览内容
+    const [ mdIntroduction, setMdIntroduction ] = useState(); //  markdown的编辑简介
+    const [ introduction, setIntroduction ] = useState('简介预览'); //  markdown的预览简介
+    const [ date, setDate ] = useState(); //  发布日期
+    const [ updateDate, setUpdateDate ] = useState(); //  修改日期
+    const [ typeInfo, setTypeInfo ] = useState([]); //  所有的文章类别
+    const [ selectedType, setSelectType ] = useState(1); //  选择的文章类别
 
     marked.setOptions({
         renderer: new marked.Renderer(),
@@ -42,7 +42,7 @@ const AddArticle = () => {
                 <Col span={18}>
                     <Row gutter={8}>
                         <Col flex="auto">
-                            <Input placeholder="博客标题" size="large" />
+                            <Input placeholder="博客标题" size="large"/>
                         </Col>
                         <Col flex="1px">
                             <Select defaultValue="1" size="large">

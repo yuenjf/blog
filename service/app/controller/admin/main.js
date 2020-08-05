@@ -5,9 +5,8 @@ const Controller = require('egg').Controller;
 class MainController extends Controller {
   async index() {
     const { ctx } = this;
-    ctx.body = 'ho';
+    ctx.body = '博客后台页面';
   }
-
 
   // 判断用户名密码是否正确
   async checkLogin() {
