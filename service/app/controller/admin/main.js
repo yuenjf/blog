@@ -12,6 +12,7 @@ class MainController extends Controller {
   async checkLogin() {
     const { ctx, app } = this;
 
+    // 直接存进数据库，不安全，可选择加密存储
     const userName = ctx.request.body.userName;
     const password = ctx.request.body.password;
 
@@ -22,9 +23,9 @@ class MainController extends Controller {
     if (result.length > 0) {
       const openId = new Date().getTime();
       ctx.session.openId = { openId };
-      ctx.body = { data: '登录成功', openId };
+      ctx.body = { data: true, openId };
     } else {
-      ctx.body = { data: '登录失败' };
+      ctx.body = { data: false };
     }
   }
 }

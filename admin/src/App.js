@@ -6,7 +6,7 @@ import Index from '../src/pages/Index'
 const App = () => {
     return (
         <Router>
-            <Route path="/login" exact component={Login}/>
+            <Route path="/" exact component={Login}/>
             <Route path="/index" exact component={Index}/>
         </Router>
     )

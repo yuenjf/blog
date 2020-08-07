@@ -1,7 +1,7 @@
 //  接口地址配置文件
 
 // 接口地址
-let ipUrl = `http://127.0.0.1:7001/default/`
+let ipUrl = `http://127.0.0.1:7001/blog/`
 
 let servicePath = {
     // 首页文章列表接口

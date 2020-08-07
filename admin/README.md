@@ -20,3 +20,6 @@
     使用 npm run eject 曝露 config ,修改 webpack.config.js 文件中的 bebelrc 为 true。（不推荐）
   
 - AddArticle 组件使用 styled-jsx 渲染 markdown 的样式不成功，怀疑是对第三方组件的支持问题，使用 `<style jsx global>` 全局渲染成功
+
+- Access to XMLHttpRequest at 'http://127.0.0.1:7001/admin/checkLogin' from origin 'http://localhost:3000' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: The value of the 'Access-Control-Allow-Origin' header in the response must not be the wildcard '*' when the request's credentials mode is 'include'. The credentials mode of requests initiated by the XMLHttpRequest is controlled by the withCredentials attribute.
+  + 原因：跨域问题
