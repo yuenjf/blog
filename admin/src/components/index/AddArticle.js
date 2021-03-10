@@ -85,7 +85,7 @@ const AddArticle = (props) => {
             message.error("发布日期不能为空");
             return false;
         }
-        message.success("检验通过");
+        // message.success("检验通过");
 
         // 把变量存入临时对象
         let articleObj = {};
@@ -94,23 +94,38 @@ const AddArticle = (props) => {
         articleObj.content = mdcontent;
         articleObj.introduction = mdIntroduction;
         articleObj.releaseDate = releaseDate;
-        let date = releaseDate.replace('-', '/');
+        let date = releaseDate.replace("-", "/");
         articleObj.releaseDate = new Date(date).getTime() / 1000;
 
         // 判断新建文章
         if (id === 0) {
             articleObj.viewCount = 0;
             axios({
-                method: 'post',
+                method: "post",
                 url: servicePath.addArticle,
                 data: articleObj,
                 withCredentials: true, // 解决跨域问题
-            }).then(res => {
+            }).then((res) => {
                 setId(res.data.insertId);
                 if (res.data.isSuccess) {
-                    message.success('文章添加成功');
+                    message.success("文章添加成功");
                 } else {
-                    message.error('文章添加失败');
+                    message.error("文章添加失败");
+                }
+            });
+            // 修改文章
+        } else {
+            articleObj.id = id;
+            axios({
+                method: "post",
+                url: servicePath.updateArticle,
+                data: articleObj,
+                withCredentials: true,
+            }).then((res) => {
+                if (res.data.isSuccess) {
+                    message.success("文章修改成功");
+                } else {
+                    message.error("文章修改失败");
                 }
             });
         }
