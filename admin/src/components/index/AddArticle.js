@@ -1,21 +1,28 @@
-import React, { useState } from 'react';
-import marked from 'marked';
-import { Row, Col, Button, DatePicker, Input, Select } from 'antd';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import servicePath from "../../config/apiUrl";
+import marked from "marked";
+import { Row, Col, Button, DatePicker, Input, Select, message } from "antd";
 
 const { Option } = Select;
 const { TextArea } = Input;
 
-const AddArticle = () => {
-    const [ id, setId ] = useState(0); //  文章的id，如果是0说明是新增加，如果不是0，说明是修改
-    const [ title, setTitle ] = useState(''); //  文章标题
-    const [ Mdcontent, setMdContent ] = useState(''); //  markdown的编辑内容
-    const [ content, setContent ] = useState('文章预览'); //  markdown的预览内容
-    const [ mdIntroduction, setMdIntroduction ] = useState(); //  markdown的编辑简介
-    const [ introduction, setIntroduction ] = useState('简介预览'); //  markdown的预览简介
-    const [ date, setDate ] = useState(); //  发布日期
-    const [ updateDate, setUpdateDate ] = useState(); //  修改日期
-    const [ typeInfo, setTypeInfo ] = useState([]); //  所有的文章类别
-    const [ selectedType, setSelectType ] = useState(1); //  选择的文章类别
+const AddArticle = (props) => {
+    const [id, setId] = useState(0); //  文章的id，如果是0说明是新增加，如果不是0，说明是修改
+    const [title, setTitle] = useState(""); //  文章标题
+    const [mdcontent, setMdContent] = useState(""); //  markdown的编辑内容
+    const [content, setContent] = useState("文章预览"); //  markdown的预览内容
+    const [mdIntroduction, setMdIntroduction] = useState(); //  markdown的编辑简介
+    const [introduction, setIntroduction] = useState("简介预览"); //  markdown的预览简介
+    const [releaseDate, setReleaseDate] = useState(); //  发布日期
+    const [updateDate, setUpdateDate] = useState(); //  修改日期
+    const [typeInfo, setTypeInfo] = useState([]); //  所有的文章类别
+    const [selectedType, setSelectType] = useState("类别"); //  选择的文章类别
+
+    // 页面渲染时调用getTypeInfo
+    useEffect(() => {
+        getTypeInfo();
+    }, []);
 
     marked.setOptions({
         renderer: new marked.Renderer(),
@@ -25,6 +32,30 @@ const AddArticle = () => {
         tables: true,
         breaks: false,
     });
+
+    const getTypeInfo = () => {
+        axios({
+            method: "get",
+            url: servicePath.getTypeInfo,
+
+            withCredentials: true,
+        }).then((res) => {
+            if (!res.data.data) {
+                localStorage.removeItem("openId");
+                props.history.push("/");
+            } else {
+                setTypeInfo(res.data.data);
+            }
+        });
+    };
+
+    const handleTitleChange = (e) => {
+        setTitle(e.target.value);
+    };
+
+    const handleSelectTypeChange = (value) => {
+        setSelectType(value);
+    };
 
     const handleContentChange = (e) => {
         setMdContent(e.target.value);
@@ -36,18 +67,50 @@ const AddArticle = () => {
         setIntroduction(marked(e.target.value));
     };
 
+    // 文章非空校验
+    const saveArticle = () => {
+        if (selectedType == "类别") {
+            message.error("必须选择文章类别");
+            return false;
+        } else if (!title) {
+            message.error("文章名称不能为空");
+            return false;
+        } else if (!mdcontent) {
+            message.error("文章内容不能为空");
+            return false;
+        } else if (!mdIntroduction) {
+            message.error("简介不能为空");
+            return false;
+        } else if (!releaseDate) {
+            message.error("发布日期不能为空");
+            return false;
+        }
+        message.success("检验通过");
+    };
+
     return (
         <>
             <Row gutter={8}>
                 <Col span={18}>
                     <Row gutter={8}>
                         <Col flex="auto">
-                            <Input placeholder="博客标题" size="large"/>
+                            <Input
+                                placeholder="博客标题"
+                                size="large"
+                                onChange={handleTitleChange}
+                            />
                         </Col>
                         <Col flex="1px">
-                            <Select defaultValue="1" size="large">
-                                <Option value="1">文章</Option>
-                                <Option value="2">杂谈</Option>
+                            <Select
+                                defaultValue={selectedType}
+                                size="large"
+                                onChange={handleSelectTypeChange}
+                            >
+                                {typeInfo.map((item) => (
+                                    <Option key={item.id} value={item.id}>
+                                        {item.typeName}
+                                    </Option>
+                                ))}
                             </Select>
                         </Col>
                     </Row>
@@ -82,7 +145,12 @@ const AddArticle = () => {
                             </Button>
                         </Col>
                         <Col span={12}>
-                            <Button type="primary" size="large" block>
+                            <Button
+                                type="primary"
+                                size="large"
+                                block
+                                onClick={saveArticle}
+                            >
                                 发布文章
                             </Button>
                         </Col>
@@ -93,6 +161,9 @@ const AddArticle = () => {
                                 <DatePicker
                                     placeholder="发布日期"
                                     size="large"
+                                    onChange={(data, dataString) =>
+                                        setReleaseDate(dataString)
+                                    }
                                 />
                             </div>
                         </Col>
@@ -101,6 +172,9 @@ const AddArticle = () => {
                                 <DatePicker
                                     placeholder="修改日期"
                                     size="large"
+                                    onChange={(data, dataString) =>
+                                        setUpdateDate(dataString)
+                                    }
                                 />
                             </div>
                         </Col>

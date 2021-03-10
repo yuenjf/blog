@@ -47,9 +47,9 @@ module.exports = appInfo => {
     domainWhiteList: [ '*' ],
   };
   config.cors = {
-    origin: 'http://localhost:3000', // *要改为具体的地址
+    origin: 'http://127.0.0.1:3000', // *要改为具体的地址
     credentials: true, // 允许cookie跨域
-    allowMethods: 'GET,POST,PUT,DELETE',
+    allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH,OPTIONS',
   };
 
   // add your user config here

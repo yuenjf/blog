@@ -26,10 +26,11 @@ const Login = (props) => {
             withCredentials: true,
         }).then(res => {
             setIsLoading(false);
-            if (res.data.data === true) {
+            if (res.data.data) {
                 localStorage.setItem('openId', res.data.openId);
                 props.history.push('/index');
             } else {
+                console.log(res.data.data);
                 message.error('用户名或密码错误');
             }
         });
