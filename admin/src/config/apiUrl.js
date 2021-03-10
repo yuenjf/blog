@@ -8,6 +8,8 @@ let servicePath = {
     checkLogin: ipUrl + `checkLogin`,
     //  获得文章类别信息
     getTypeInfo: ipUrl + `getTypeInfo`,
+    //  添加文章
+    addArticle: ipUrl + `addArticle`,
 };
 
 export default servicePath;

@@ -30,10 +30,26 @@ class MainController extends Controller {
         }
     }
 
-    //后台文章分类信息
+    //  后台文章分类信息
     async getTypeInfo() {
-        const resType = await this.app.mysql.select("type");
-        this.ctx.body = { data: resType };
+        const { ctx, app } = this;
+        const resType = await app.mysql.select("type");
+        ctx.body = { data: resType };
+    }
+
+    //添加文章
+    async addArticle() {
+        const { ctx, app } = this;
+
+        let tmpArticle = ctx.request.body;
+        const result = await app.mysql.insert("article", tmpArticle);
+        const insertSuccess = result.affectedRows === 1;
+        const insertId = result.insertId;
+
+        ctx.body = {
+            isSuccess: insertSuccess,
+            insertId: insertId,
+        };
     }
 }
 
