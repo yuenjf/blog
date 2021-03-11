@@ -56,13 +56,28 @@ class MainController extends Controller {
     async updateArticle() {
         const { ctx, app } = this;
 
-        let tmpArticle = this.ctx.request.body;
-        const result = await this.app.mysql.update("article", tmpArticle);
+        let tmpArticle = ctx.request.body;
+        const result = await app.mysql.update("article", tmpArticle);
         const updateSuccess = result.affectedRows === 1;
 
-        this.ctx.body = {
+        ctx.body = {
             isSuccess: updateSuccess,
         };
+    }
+
+    // 获取文章列表
+    async getArticleList() {
+        const { ctx, app } = this;
+        let sql = `
+            SELECT article.id as id,
+            article.title as title,
+            FROM_UNIXTIME(article.releaseDate,'%Y-%m-%d') as releaseDate,  
+            type.typeName as typeName 
+            FROM article LEFT JOIN type ON article.typeId = type.id
+            ORDER BY article.id DESC
+        `;
+        const resList = await app.mysql.query(sql);
+        ctx.body = { data: resList };
     }
 }
 

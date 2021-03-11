@@ -20,4 +20,9 @@ module.exports = (app) => {
         adminauth,
         controller.admin.main.updateArticle
     );
+    router.get(
+        "/admin/getArticleList",
+        adminauth,
+        controller.admin.main.getArticleList
+    );
 };

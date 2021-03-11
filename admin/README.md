@@ -23,3 +23,6 @@
 
 - Access to XMLHttpRequest at 'http://127.0.0.1:7001/admin/checkLogin' from origin 'http://localhost:3000' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: The value of the 'Access-Control-Allow-Origin' header in the response must not be the wildcard '*' when the request's credentials mode is 'include'. The credentials mode of requests initiated by the XMLHttpRequest is controlled by the withCredentials attribute.
   + 原因：跨域问题
+
+- 路由通过`props.history.push("xxx")`转跳空白
+  + 原因：父路由设置了exact精确匹配，子路由转跳所以空白

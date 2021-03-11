@@ -7,7 +7,7 @@ const App = () => {
     return (
         <Router>
             <Route path="/" exact component={Login}/>
-            <Route path="/index" exact component={Index}/>
+            <Route path="/index" component={Index}/>
         </Router>
     )
 }

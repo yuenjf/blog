@@ -97,7 +97,7 @@ const AddArticle = (props) => {
         let date = releaseDate.replace("-", "/");
         articleObj.releaseDate = new Date(date).getTime() / 1000;
 
-        // 判断新建文章
+        // 新建文章
         if (id === 0) {
             articleObj.viewCount = 0;
             axios({
