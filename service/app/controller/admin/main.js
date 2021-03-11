@@ -79,6 +79,15 @@ class MainController extends Controller {
         const resList = await app.mysql.query(sql);
         ctx.body = { data: resList };
     }
+
+    //删除文章
+    async delArticle() {
+        const { ctx, app } = this;
+        
+        let id = ctx.params.id;
+        const result = await app.mysql.delete("article", { id: id });
+        ctx.body = { data: result };
+    }
 }
 
 module.exports = MainController;

@@ -37,7 +37,6 @@ const AddArticle = (props) => {
         axios({
             method: "get",
             url: servicePath.getTypeInfo,
-
             withCredentials: true,
         }).then((res) => {
             if (!res.data.data) {

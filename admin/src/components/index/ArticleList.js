@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import servicePath from "../../config/apiUrl";
-import { List, Row, Col, Button, Modal } from "antd";
+import { List, Row, Col, Button, Modal, message } from "antd";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
 
 const { confirm } = Modal;
 
-const Welcome = (props) => {
+const ArticleList = (props) => {
     const [list, setList] = useState([]);
 
     useEffect(() => {
         handleGetArticleList();
     }, []);
 
+    // 获取文章列表
     const handleGetArticleList = () => {
         axios({
             method: "get",
@@ -19,6 +21,28 @@ const Welcome = (props) => {
             withCredentials: true,
         }).then((res) => {
             setList(res.data.data);
+        });
+    };
+
+    // 删除文章
+    const handleDelArticle = (id) => {
+        confirm({
+            title: "删除确认?",
+            icon: <ExclamationCircleOutlined />,
+            content: "删除后将无法恢复，请慎重！",
+            onOk() {
+                axios({
+                    method: "get",
+                    url: servicePath.delArticle + id,
+                    withCredentials: true,
+                }).then((res) => {
+                    message.success("文章删除成功");
+                    // 使用filter根据id删除list中对应的选项
+                    const tempList = list.filter((item) => item.id !== id);
+                    setList(tempList);
+                });
+            },
+            onCancel() {},
         });
     };
 
@@ -55,7 +79,14 @@ const Welcome = (props) => {
                             <Col span={4}>{item.viewCount}</Col>
                             <Col span={4}>
                                 <Button type="primary">修改</Button>
-                                <Button type="primary" danger>删除</Button>
+                                &nbsp;
+                                <Button
+                                    type="primary"
+                                    danger
+                                    onClick={() => handleDelArticle(item.id)}
+                                >
+                                    删除
+                                </Button>
                             </Col>
                         </Row>
                     </List.Item>
@@ -64,14 +95,12 @@ const Welcome = (props) => {
             <style jsx global>
                 {`
                     .list-content {
-                        width: 100%
+                        width: 100%;
                     }
-
-
                 `}
             </style>
         </>
     );
 };
 
-export default Welcome;
+export default ArticleList;

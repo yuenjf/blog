@@ -14,6 +14,8 @@ let servicePath = {
     updateArticle: ipUrl + `updateArticle`,
     //  获取文章列表
     getArticleList: ipUrl + `getArticleList`,
+    //  删除文章
+    delArticle: ipUrl + `delArticle/`,
 };
 
 export default servicePath;
