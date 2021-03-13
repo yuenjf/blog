@@ -59,7 +59,6 @@ class MainController extends Controller {
         let tmpArticle = ctx.request.body;
         const result = await app.mysql.update("article", tmpArticle);
         const updateSuccess = result.affectedRows === 1;
-
         ctx.body = {
             isSuccess: updateSuccess,
         };
@@ -72,6 +71,7 @@ class MainController extends Controller {
             SELECT article.id as id,
             article.title as title,
             FROM_UNIXTIME(article.releaseDate,'%Y-%m-%d') as releaseDate,  
+            article.viewCount as viewCount,
             type.typeName as typeName 
             FROM article LEFT JOIN type ON article.typeId = type.id
             ORDER BY article.id DESC
@@ -83,9 +83,28 @@ class MainController extends Controller {
     //删除文章
     async delArticle() {
         const { ctx, app } = this;
-        
+
         let id = ctx.params.id;
         const result = await app.mysql.delete("article", { id: id });
+        ctx.body = { data: result };
+    }
+
+    // 根据文章ID获得文章详情
+    async getArticleById() {
+        const { ctx, app } = this;
+
+        const id = ctx.params.id;
+        let sql = `
+        SELECT article.id as id ,
+        article.title as title ,
+        FROM_UNIXTIME(article.releaseDate,'%Y-%m-%d') as releaseDate ,
+        article.content as content,
+        article.introduction as introduction ,
+        type.typeName as typeName 
+        FROM article LEFT JOIN type ON article.typeId = type.id
+        WHERE article.id = ${id}
+        `;
+        const result = await app.mysql.query(sql);
         ctx.body = { data: result };
     }
 }

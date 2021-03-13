@@ -30,6 +30,8 @@ const ArticleList = (props) => {
             title: "删除确认?",
             icon: <ExclamationCircleOutlined />,
             content: "删除后将无法恢复，请慎重！",
+            okText: "确认",
+            cancelText: "取消",
             onOk() {
                 axios({
                     method: "get",
@@ -78,7 +80,16 @@ const ArticleList = (props) => {
                             <Col span={4}>{item.releaseDate}</Col>
                             <Col span={4}>{item.viewCount}</Col>
                             <Col span={4}>
-                                <Button type="primary">修改</Button>
+                                <Button
+                                    type="primary"
+                                    onClick={() => {
+                                        props.history.push(
+                                            `/index/add/${item.id}`
+                                        );
+                                    }}
+                                >
+                                    修改
+                                </Button>
                                 &nbsp;
                                 <Button
                                     type="primary"

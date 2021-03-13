@@ -3,6 +3,7 @@ import axios from "axios";
 import servicePath from "../../config/apiUrl";
 import marked from "marked";
 import { Row, Col, Button, DatePicker, Input, Select, message } from "antd";
+import moment from "moment";
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -10,18 +11,33 @@ const { TextArea } = Input;
 const AddArticle = (props) => {
     const [id, setId] = useState(0); //  文章的id，如果是0说明是新增加，如果不是0，说明是修改
     const [title, setTitle] = useState(""); //  文章标题
-    const [mdcontent, setMdContent] = useState(""); //  markdown的编辑内容
+    const [mdContent, setMdContent] = useState(""); //  markdown的编辑内容
     const [content, setContent] = useState("文章预览"); //  markdown的预览内容
     const [mdIntroduction, setMdIntroduction] = useState(); //  markdown的编辑简介
     const [introduction, setIntroduction] = useState("简介预览"); //  markdown的预览简介
     const [releaseDate, setReleaseDate] = useState(); //  发布日期
     const [updateDate, setUpdateDate] = useState(); //  修改日期
     const [typeInfo, setTypeInfo] = useState([]); //  所有的文章类别
-    const [selectedType, setSelectType] = useState("类别"); //  选择的文章类别
+    const [selectedTypeId, setSelectedTypeId] = useState(); //  选择的文章类别ID
+    const [selectedType, setSelectedType] = useState("类别"); // 选择地文章类别名称
 
-    // 页面渲染时调用getTypeInfo
+    const [BtnText, setBtnText] = useState("添加文章"); // 添加文章 按钮 内容
+    const [banRDate, setBanRDate] = useState(false); // 发布日期控件状态
+    const [banUDate, setBanUDate] = useState(true); // 修改日期控件状态
+
     useEffect(() => {
+        // 获取所有文章类型
         getTypeInfo();
+
+        // 修改文章时获取文章ID
+        let tempId = props.match.params.id;
+        if (tempId) {
+            setId(tempId);
+            setBanRDate(true);
+            setBanUDate(false);
+            setBtnText("修改文章");
+            getArticleById(tempId);
+        }
     }, []);
 
     marked.setOptions({
@@ -33,6 +49,7 @@ const AddArticle = (props) => {
         breaks: false,
     });
 
+    // 获取类型信息
     const getTypeInfo = () => {
         axios({
             method: "get",
@@ -48,33 +65,16 @@ const AddArticle = (props) => {
         });
     };
 
-    const handleTitleChange = (e) => {
-        setTitle(e.target.value);
-    };
-
-    const handleSelectTypeChange = (value) => {
-        setSelectType(value);
-    };
-
-    const handleContentChange = (e) => {
-        setMdContent(e.target.value);
-        setContent(marked(e.target.value));
-    };
-
-    const handleIntroductionChange = (e) => {
-        setMdIntroduction(e.target.value);
-        setIntroduction(marked(e.target.value));
-    };
-
-    // 保存文章 - 文章非空校验
+    // 保存文章
     const saveArticle = () => {
+        // 非空校验
         if (selectedType == "类别") {
             message.error("必须选择文章类别");
             return false;
         } else if (!title) {
             message.error("文章名称不能为空");
             return false;
-        } else if (!mdcontent) {
+        } else if (!mdContent) {
             message.error("文章内容不能为空");
             return false;
         } else if (!mdIntroduction) {
@@ -84,16 +84,15 @@ const AddArticle = (props) => {
             message.error("发布日期不能为空");
             return false;
         }
-        // message.success("检验通过");
 
         // 把变量存入临时对象
         let articleObj = {};
         articleObj.title = title;
-        articleObj.typeId = selectedType;
-        articleObj.content = mdcontent;
+        articleObj.typeId = selectedTypeId;
+        articleObj.content = mdContent;
         articleObj.introduction = mdIntroduction;
-        articleObj.releaseDate = releaseDate;
-        let date = releaseDate.replace("-", "/");
+        // js会将-分割的字符串基准时区设置为GMT，与当前时区相差8小时
+        let date = releaseDate.replace(/-/g, "/");
         articleObj.releaseDate = new Date(date).getTime() / 1000;
 
         // 新建文章
@@ -108,6 +107,7 @@ const AddArticle = (props) => {
                 setId(res.data.insertId);
                 if (res.data.isSuccess) {
                     message.success("文章添加成功");
+                    setId(0);
                 } else {
                     message.error("文章添加失败");
                 }
@@ -130,6 +130,24 @@ const AddArticle = (props) => {
         }
     };
 
+    // 获取文章详情
+    const getArticleById = (id) => {
+        axios({
+            method: "get",
+            url: servicePath.getArticleById + id,
+            withCredentials: true,
+        }).then((res) => {
+            let tempRes = res.data.data[0];
+            setTitle(tempRes.title);
+            setSelectedType(tempRes.typeName);
+            setMdContent(tempRes.content);
+            setContent(marked(tempRes.content));
+            setMdIntroduction(tempRes.introduction);
+            setIntroduction(marked(tempRes.introduction));
+            setReleaseDate(tempRes.releaseDate);
+        });
+    };
+
     return (
         <>
             <Row gutter={8}>
@@ -139,14 +157,19 @@ const AddArticle = (props) => {
                             <Input
                                 placeholder="博客标题"
                                 size="large"
-                                onChange={handleTitleChange}
+                                value={title}
+                                onChange={(e) => {
+                                    setTitle(e.target.value);
+                                }}
                             />
                         </Col>
                         <Col flex="1px">
                             <Select
-                                defaultValue={selectedType}
+                                value={selectedType}
                                 size="large"
-                                onChange={handleSelectTypeChange}
+                                onChange={(value) => {
+                                    setSelectedTypeId(value);
+                                }}
                             >
                                 {typeInfo.map((item) => (
                                     <Option key={item.id} value={item.id}>
@@ -165,7 +188,11 @@ const AddArticle = (props) => {
                                     placeholder="文章内容"
                                     spellCheck="false"
                                     allowClear
-                                    onChange={handleContentChange}
+                                    value={mdContent}
+                                    onChange={(e) => {
+                                        setMdContent(e.target.value);
+                                        setContent(marked(e.target.value));
+                                    }}
                                 />
                             </Col>
                             <Col span={12}>
@@ -182,7 +209,7 @@ const AddArticle = (props) => {
                 <Col span={6}>
                     <Row gutter={8}>
                         <Col span={12}>
-                            <Button size="large" block>
+                            <Button size="large" block disabled>
                                 暂存文章
                             </Button>
                         </Col>
@@ -193,7 +220,7 @@ const AddArticle = (props) => {
                                 block
                                 onClick={saveArticle}
                             >
-                                发布文章
+                                {BtnText}
                             </Button>
                         </Col>
                     </Row>
@@ -203,9 +230,12 @@ const AddArticle = (props) => {
                                 <DatePicker
                                     placeholder="发布日期"
                                     size="large"
-                                    onChange={(data, dataString) =>
-                                        setReleaseDate(dataString)
-                                    }
+                                    disabled={banRDate}
+                                    // value={moment(releaseDate)}
+                                    onChange={(data, dataString) => {
+                                        setReleaseDate(dataString);
+                                        console.log(dataString);
+                                    }}
                                 />
                             </div>
                         </Col>
@@ -214,6 +244,7 @@ const AddArticle = (props) => {
                                 <DatePicker
                                     placeholder="修改日期"
                                     size="large"
+                                    disabled={banUDate}
                                     onChange={(data, dataString) =>
                                         setUpdateDate(dataString)
                                     }
@@ -230,7 +261,11 @@ const AddArticle = (props) => {
                                     placeholder="文章简介"
                                     spellCheck="false"
                                     allowClear
-                                    onChange={handleIntroductionChange}
+                                    value={mdIntroduction}
+                                    onChange={(e) => {
+                                        setMdIntroduction(e.target.value);
+                                        setIntroduction(marked(e.target.value));
+                                    }}
                                 />
                             </Col>
                         </Row>

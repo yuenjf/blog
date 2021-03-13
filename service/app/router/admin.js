@@ -30,4 +30,9 @@ module.exports = (app) => {
         adminauth,
         controller.admin.main.delArticle
     );
+    router.get(
+        "/admin/getArticleById/:id",
+        adminauth,
+        controller.admin.main.getArticleById
+    );
 };

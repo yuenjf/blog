@@ -16,6 +16,8 @@ let servicePath = {
     getArticleList: ipUrl + `getArticleList`,
     //  删除文章
     delArticle: ipUrl + `delArticle/`,
+    //  根据ID获得文章详情
+    getArticleById: ipUrl + `getArticleById/`,
 };
 
 export default servicePath;
